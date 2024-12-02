@@ -1,0 +1,69 @@
+"""
+Gerardo Larreta Herrera
+Grupo:951
+"""
+#Se hace el codigo para la extraccion de datos de los productos para niños
+import time
+import pandas as pd
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
+from bs4 import BeautifulSoup
+
+def extraer_datos_producto():
+
+    s = Service(ChromeDriverManager().install())
+    option = Options()
+    option.add_argument("--window-size=1100,1200")
+    navegador = webdriver.Chrome(service=s, options=option)
+
+    navegador.get("https://www.nike.com/mx/")
+    navegador.refresh()
+    time.sleep(2)
+
+    CategoriaClick = navegador.find_element(By.LINK_TEXT, "Niño/a")
+    CategoriaClick.click()
+    time.sleep(3)
+
+    ComprarTodoClick = navegador.find_element(By.LINK_TEXT, "Comprar todo")
+    ComprarTodoClick.click()
+    time.sleep(5)
+    datos = {"Nombre": [], "Precio": [], "Tipo": []}
+
+    for i in range(5):
+        time.sleep(3)
+        soup = BeautifulSoup(navegador.page_source, "html.parser")
+        productos = soup.find_all("div", class_="product-card__body")
+
+        for producto in productos:
+            # Extraer el nombre del producto
+            nombre_elemento = producto.find("div", class_="product-card__title")
+            nombre = nombre_elemento.text
+
+            # Extraer el precio del producto
+            precio_elemento = producto.find("div", class_="product-price")
+            precio = precio_elemento.text
+
+            # Extraer el tipo de producto
+            tipo_elemento = producto.find("div", class_="product-card__subtitle")
+            tipo = tipo_elemento.text
+
+            # Guardar los datos
+            datos["Nombre"].append(nombre)
+            datos["Precio"].append(precio)
+            datos["Tipo"].append(tipo)
+
+        # Hacer scroll hacia abajo
+        navegador.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+    # Guardar los datos en un DataFrame
+    df = pd.DataFrame(datos)
+    df.to_csv("datasets/productos_niños.csv", index=False)
+
+    # Cerrar el navegador
+    navegador.quit()
+
+if __name__ == "__main__":
+    extraer_datos_producto()
