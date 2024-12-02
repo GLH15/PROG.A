@@ -60,7 +60,7 @@ def extraer_datos_producto():
 
     # Guardar los datos en un DataFrame
     df = pd.DataFrame(datos)
-    df.to_csv("productos_Mujer.csv", index=False)
+    df.to_csv("datasets/productos_Mujer.csv", index=False)
 
     # Cerrar el navegador
     navegador.quit()
