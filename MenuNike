@@ -1,0 +1,54 @@
+import WelcomeNike as w
+import Dash1 as nike
+import dash_bootstrap_components as dbc
+from dash import Dash, Input, Output, dcc, html, Dash, callback
+
+# the style arguments for the sidebar. We use position:fixed and a fixed width
+
+@callback(
+    Output("page-content", "children"),
+    [Input("url", "pathname")])
+def render_page_content(pathname):
+    if pathname == "/":
+        return w.welcome()
+    elif pathname == "/dash-1":
+        return nike.dashboard()
+    # If the user tries to reach a different page, return a 404 message
+    return html.Div(
+        [
+            html.H1("404: Not found", className="text-danger"),
+            html.Hr(),
+            html.P(f"The pathname {pathname} was not recognised..."),
+        ],
+        className="p-3 bg-light rounded-3",
+    )
+
+def menu_dashboard():
+    sidebar = html.Div(
+        [
+            html.H2("Dashboard", className="display-5"),
+            html.Hr(),
+            html.P(
+                "Objetivo: Encontrar los productos con mayor y menor precio ademas del promedio en productos Nike", className="lead"
+            ),
+            dbc.Nav(
+                [
+                    dbc.NavLink("Home", href="/", active="exact"),
+                    dbc.NavLink("Dasboard 1", href="/dash-1", active="exact"),
+                    dbc.NavLink("Github", href="https://github.com/GLH15/Repositorio-Nike", active="exact", target="_blank")
+                ],
+                vertical=True,
+                pills=True,
+            ),
+        ],
+        className="SIDEBAR_STYLE"
+    )
+
+    content = html.Div(id="page-content", className=".CONTENT_STYLE")
+
+    return html.Div([dcc.Location(id="url"), sidebar, content])
+if __name__ == "__main__":
+    app = Dash(external_stylesheets=[dbc.themes.DARKLY],
+               suppress_callback_exceptions=True)
+    app.layout = menu_dashboard()
+    app.run(debug=True)
