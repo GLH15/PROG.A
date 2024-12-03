@@ -1,0 +1,89 @@
+import pandas as pd
+import plotly.express as px
+import dash_bootstrap_components as dbc
+from dash import dcc, html, Dash, callback, Input, Output
+
+# Cargar y limpiar el dataset
+data = pd.read_csv("datasets/Productos_limpios.csv")
+data['Precio'] = data['Precio'].replace(",", "", regex=True).astype(float)
+
+
+# Función para gráfica de productos más caros
+def grafica_productos_caros():
+    top_caros = data.nlargest(10, 'Precio')
+    fig = px.bar(top_caros, x='Nombre', y='Precio',
+                 title="Top 10 Productos más Caros",
+                 labels={'Nombre': 'Producto', 'Precio': 'Precio (MXN)'},
+                 template="plotly_dark")
+    return fig
+
+
+# Función para gráfica de productos más baratos
+def grafica_productos_baratos():
+    top_baratos = data.nsmallest(10, 'Precio')
+    fig = px.bar(top_baratos, x='Nombre', y='Precio',
+                 title="Top 10 Productos más Baratos",
+                 labels={'Nombre': 'Producto', 'Precio': 'Precio (MXN)'},
+                 template="plotly_dark")
+    return fig
+
+
+# Función para gráfica del precio promedio por tipo
+def grafica_precio_promedio():
+    avg_precio = data.groupby('Tipo')['Precio'].mean().reset_index()
+    fig = px.bar(avg_precio, x='Tipo', y='Precio',
+                 title="Precio Promedio por Tipo de Producto",
+                 labels={'Tipo': 'Tipo de Producto', 'Precio': 'Precio Promedio (MXN)'},
+                 template="plotly_dark")
+    return fig
+
+
+# Crear tarjeta de filtros (opcional, puedes ampliarla más tarde)
+def tarjeta_filtro():
+    control = dbc.Card(
+        [
+            dbc.Label("Filtrar por Tipo:"),
+            dcc.Dropdown(options=[{'label': tipo, 'value': tipo} for tipo in data['Tipo'].unique()],
+                         value=None, id="tipo_filtro")
+        ],
+        body=True,
+        style={"background-color": "#1e1e1e", "color": "white"}
+    )
+    return control
+
+
+# Función principal del dashboard
+def dashboard():
+    fig_caros = grafica_productos_caros()
+    fig_baratos = grafica_productos_baratos()
+    fig_promedio = grafica_precio_promedio()
+
+    body = html.Div([
+        dbc.Row(
+            [
+                dbc.Col(html.Div([
+                    html.H3("Filtros", style={"color": "white"}),
+                    tarjeta_filtro()
+                ]), width=3),
+                dbc.Col(html.Div([
+                    dbc.Row(dcc.Graph(figure=fig_caros, id="fig_caros")),
+                    dbc.Row(dcc.Graph(figure=fig_baratos, id="fig_baratos")),
+                    dbc.Row(dcc.Graph(figure=fig_promedio, id="fig_promedio")),
+                ]), width=9),
+            ]
+        )
+    ], style={"background-color": "#000000"})
+
+    return body
+
+
+# Inicializar la app
+app = Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
+app.layout = html.Div([
+    html.H1("Dashboard de Productos Nike", style={"color": "white", "text-align": "center"}),
+    html.Hr(),
+    dashboard()
+])
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
