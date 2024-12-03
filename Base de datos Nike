@@ -1,0 +1,48 @@
+create database Nike;
+USE Nike;
+
+
+create table categoria(
+Id_cate int auto_increment primary key,
+NombreCate varchar(50)
+);
+create table products(
+Id_Productos int auto_increment primary key,
+NombreProd varchar(60),
+PreciosProd decimal(10,2),
+TipoProd varchar(70),
+Id_cate int,
+foreign key (Id_cate) references Categoria(Id_cate)
+);
+create table products_hombre(
+Id_ProdHombre int auto_increment primary key,
+NombreH varchar(70),
+PrecioH decimal(10,2),
+TipoH varchar(50),
+Id_cate int,
+foreign key (Id_cate) references categoria(Id_cate)
+);
+
+create table products_mujer(
+Id_ProdMujer int auto_increment primary key,
+NombreM varchar(50),
+PrecioM decimal(10,2),
+TipoM varchar(50),
+Id_cate int,
+foreign key (Id_cate) references categoria(Id_cate)
+);
+
+create table products_chicos(
+Id_ProdChicos int auto_increment primary key,
+NombreN varchar(50),
+PrecioN decimal(10,2),
+TipoN varchar(50),
+Id_cate int,
+foreign key (Id_cate) references categoria(Id_cate)
+);
+
+SELECT * FROM categoria;
+SELECT * FROM products_hombre;
+SELECT * FROM products_mujer;
+SELECT * FROM products_chicos;
+SELECT * FROM products;
