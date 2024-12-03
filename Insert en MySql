@@ -6,71 +6,10 @@ Grupo:951
 from sqlalchemy import create_engine
 import pandas as pd
 
-#insertamos los datos de el df limpio de los productos de hombre en la tabla llamada producto_hombre
-def insertar_datos_Hombre():
-    user = "root"
-    password = "12345678"
-    server = "127.0.0.1"
-    db = "Nike"
-    cadena_conexion = f"mysql+mysqlconnector://{user}:{password}@{server}/{db}"
-    engine = create_engine(cadena_conexion)
-    conexion = engine.connect()
+from sqlalchemy import create_engine
+import pandas as pd
 
-    df = pd.read_csv("datasets/productos_Hombre_limpio.csv")
-    #if_exist = fail o append o replace
-    df.to_sql("producto_hombre", conexion, if_exists="replace", index=False, chunksize=100)
-    conexion.commit()
-    conexion.close()
-
-#insertamos los datos de el df limpio de los productos de mujer en la tabla llamada producto_mujer
-def insertar_datos_mujer():
-    user = "root"
-    password = "12345678"
-    server = "127.0.0.1"
-    db = "Nike"
-    cadena_conexion = f"mysql+mysqlconnector://{user}:{password}@{server}/{db}"
-    engine = create_engine(cadena_conexion)
-    conexion = engine.connect()
-
-    df = pd.read_csv("datasets/productos_Mujer_limpio.csv")
-    #if_exist = fail o append o replace
-    df.to_sql("producto_mujer", conexion, if_exists="replace", index=False, chunksize=100)
-    conexion.commit()
-    conexion.close()
-
-#insertamos los datos de el df limpio de los productos de niños en la tabla llamada producto_chicos
-def insertar_datos_chicos():
-    user = "root"
-    password = "12345678"
-    server = "127.0.0.1"
-    db = "Nike"
-    cadena_conexion = f"mysql+mysqlconnector://{user}:{password}@{server}/{db}"
-    engine = create_engine(cadena_conexion)
-    conexion = engine.connect()
-
-    df = pd.read_csv("datasets/productos_niños_limpio.csv")
-    #if_exist = fail o append o replace
-    df.to_sql("producto_chicos", conexion, if_exists="replace", index=False, chunksize=100)
-    conexion.commit()
-    conexion.close()
-
-#insertamos los datos de el df limpio de todos los productos en la tabla llamada productos
-def insertar_datos_productos():
-    user = "root"
-    password = "12345678"
-    server = "127.0.0.1"
-    db = "Nike"
-    cadena_conexion = f"mysql+mysqlconnector://{user}:{password}@{server}/{db}"
-    engine = create_engine(cadena_conexion)
-    conexion = engine.connect()
-
-    df = pd.read_csv("datasets/Productos_limpios.csv")
-    #if_exist = fail o append o replace
-    df.to_sql("productos", conexion, if_exists="replace", index=False, chunksize=100)
-    conexion.commit()
-    conexion.close()
-
-#insertamos los datos de el df de categorias
+#insertamos los datos de el df limpio de los productos de hombre en la tabla llamada categorias
 def insertar_datos_categorias():
     user = "root"
     password = "12345678"
@@ -82,12 +21,77 @@ def insertar_datos_categorias():
 
     df = pd.read_csv("datasets/categorias.csv")
     #if_exist = fail o append o replace
-    df.to_sql("categorias", conexion, if_exists="replace", index=False, chunksize=100)
+    df.to_sql("categoria", conexion, if_exists="replace", index=False, chunksize=100)
     conexion.commit()
     conexion.close()
+
+#insertamos los datos de el df limpio de los productos de hombre en la tabla llamada products
+def insertar_datos_productos():
+    user = "root"
+    password = "12345678"
+    server = "127.0.0.1"
+    db = "Nike"
+    cadena_conexion = f"mysql+mysqlconnector://{user}:{password}@{server}/{db}"
+    engine = create_engine(cadena_conexion)
+    conexion = engine.connect()
+
+    df = pd.read_csv("datasets/Productos_limpios.csv")
+    #if_exist = fail o append o replace
+    df.to_sql("products", conexion, if_exists="replace", index=False, chunksize=100)
+    conexion.commit()
+    conexion.close()
+
+
+#insertamos los datos de el df limpio de los productos de hombre en la tabla llamada products_hombre
+def insertar_datos_Hombre():
+    user = "root"
+    password = "12345678"
+    server = "127.0.0.1"
+    db = "Nike"
+    cadena_conexion = f"mysql+mysqlconnector://{user}:{password}@{server}/{db}"
+    engine = create_engine(cadena_conexion)
+    conexion = engine.connect()
+
+    df = pd.read_csv("datasets/productos_Hombre_limpio.csv")
+    #if_exist = fail o append o replace
+    df.to_sql("products_hombre", conexion, if_exists="replace", index=False, chunksize=100)
+    conexion.commit()
+    conexion.close()
+#insertamos los datos de el df limpio de los productos de hombre en la tabla llamada products_mujer
+def insertar_datos_mujer():
+    user = "root"
+    password = "12345678"
+    server = "127.0.0.1"
+    db = "Nike"
+    cadena_conexion = f"mysql+mysqlconnector://{user}:{password}@{server}/{db}"
+    engine = create_engine(cadena_conexion)
+    conexion = engine.connect()
+
+    df = pd.read_csv("datasets/productos_Mujer_limpio.csv")
+    #if_exist = fail o append o replace
+    df.to_sql("products_mujer", conexion, if_exists="replace", index=False, chunksize=100)
+    conexion.commit()
+    conexion.close()
+
+#insertamos los datos de el df limpio de los productos de hombre en la tabla llamada products_chicos
+def insertar_datos_chicos():
+    user = "root"
+    password = "12345678"
+    server = "127.0.0.1"
+    db = "Nike"
+    cadena_conexion = f"mysql+mysqlconnector://{user}:{password}@{server}/{db}"
+    engine = create_engine(cadena_conexion)
+    conexion = engine.connect()
+
+    df = pd.read_csv("datasets/productos_niños_limpio.csv")
+    #if_exist = fail o append o replace
+    df.to_sql("products_chicos", conexion, if_exists="replace", index=False, chunksize=100)
+    conexion.commit()
+    conexion.close()
+
 if __name__ == '__main__':
+    insertar_datos_categorias()
+    insertar_datos_productos()
     insertar_datos_Hombre()
     insertar_datos_mujer()
     insertar_datos_chicos()
-    insertar_datos_productos()
-    insertar_datos_categorias()
