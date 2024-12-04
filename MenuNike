@@ -28,9 +28,6 @@ def menu_dashboard():
         [
             html.H2("Dashboard", className="display-5"),
             html.Hr(),
-            html.P(
-                "Objetivo: Encontrar los productos con mayor y menor precio ademas del promedio en productos Nike", className="lead"
-            ),
             dbc.Nav(
                 [
                     dbc.NavLink("Home", href="/", active="exact"),
