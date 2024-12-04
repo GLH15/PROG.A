@@ -29,13 +29,5 @@
 
 /* Títulos y párrafos */
 h1, h2, h3, h4, h5, h6, p, .lead {
-    color: #fff;
-}
-
-/* Imagen central en la página de bienvenida */
-img {
-    display: block;
-    margin: 0 auto;
-    max-width: 100%;
-    height: auto;
+    color: #b0afaf;
 }
